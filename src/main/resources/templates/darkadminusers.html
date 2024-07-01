@@ -1,0 +1,63 @@
+<link rel="stylesheet" th:href="@{webjars/bootstrap/css/bootstrap.min.css}">
+
+<div th:insert="menu">
+
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>IBAN</th>
+        <th>Nb Pillage</th>
+        <th>Total Somme Pillees</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="userid: ${users}">
+        <td th:text="${userid.name}"></td>
+        <td th:text="${userid.email}"></td>
+        <td th:text="${userid.iban}"></td>
+        <td th:text="${userid.nbPillage}"></td>
+        <td th:text="${userid.totalSommePillees}"></td>
+        <td>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal"   th:attr="data-bs-target='#exampleModal' + ${userid.id}">
+                Piller
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Modal for each user -->
+<div th:each="userid : ${users}">
+    <div class="modal fade" th:id="'exampleModal' + ${userid.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Piller l'Utilisateur</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/users/pillage}" method="post">
+                        <div class="mb-3">
+                            <label for="totalSommePillees" class="form-label">Somme Pillée</label>
+                            <input type="hidden" name="id" th:value="*{userid.id}"  class="form-control my-3">
+                            <input type="text" id="totalSommePillees" class="form-control" name="totalSommePillees"  th:value="*{userid.totalSommePillees}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+<script> const myModal = new bootstrap.Modal('#myModal', {
+        keyboard: false
+    })
+</script>
