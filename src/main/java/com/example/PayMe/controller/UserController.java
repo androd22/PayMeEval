@@ -10,6 +10,9 @@ import com.example.PayMe.model.User;
 import com.example.PayMe.service.UserService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+import java.util.Objects;
+
 @Controller
 public class UserController {
 
@@ -65,13 +68,26 @@ public class UserController {
 //	}
 
 	@PostMapping("/users/pillage")
-	public String pillageUser(@RequestParam("id") Long id, @RequestParam("totalSommePillees") int totalSommePillees) {
+	public String pillageUser(@RequestParam("id") Long id, @RequestParam("totalSommePillees") int totalSommePillees, RedirectAttributes ra) {
 		User user = userRepository.findById(id).orElse(null);
 		if (user != null) {
 			user.setTotalSommePillees(totalSommePillees + user.getTotalSommePillees());
 			user.setNbPillage(user.getNbPillage() + 1);
-			userRepository.save(user);
-		}
+			if(user.getTotalSommePillees() <  user.getBalance()) {
+				for(User userList : userService.getAllUser()) {
+					if(Objects.equals(userList.getName(), "darkuser")) {
+						userList.setBalance(userList.getBalance() + totalSommePillees);
+						user.setBalance(user.getBalance() - totalSommePillees);
+						userRepository.save(userList);
+					}
+				}
+
+					userRepository.save(user);
+				}else{
+				ra.addFlashAttribute("message", "L'utilisateur est trop pauvre pour vous !");
+			}
+
+			}
 		return "redirect:/darkadmin";
 	}
 }

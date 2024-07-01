@@ -27,6 +27,8 @@ public class User {
 	
 	private String pwd;
 
+	private boolean display;
+
 	private int nbPillage;
 
 	private int totalSommePillees;
@@ -132,6 +134,14 @@ public class User {
 		this.listeVirement = listeVirement;
 	}
 
+	public boolean isDisplay() {
+		return display;
+	}
+
+	public void setDisplay(boolean display) {
+		this.display = display;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
@@ -141,6 +151,7 @@ public class User {
 				", iban='" + iban + '\'' +
 				", email='" + email + '\'' +
 				", pwd='" + pwd + '\'' +
+				", display=" + display +
 				", nbPillage=" + nbPillage +
 				", totalSommePillees=" + totalSommePillees +
 				", listContacts=" + listContacts +

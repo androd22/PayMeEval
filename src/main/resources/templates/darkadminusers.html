@@ -3,6 +3,7 @@
 <div th:insert="menu">
 
 </div>
+<div class="alert alert-primary" role="alert" th:text="${message}" th:if="${message}"></div>
 <table class="table">
     <thead>
     <tr>
@@ -15,9 +16,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="userid: ${users}">
+    <tr th:each="userid: ${users}" >
         <td th:text="${userid.name}"></td>
         <td th:text="${userid.email}"></td>
+        <td th:text="${userid.balance}"></td>
         <td th:text="${userid.iban}"></td>
         <td th:text="${userid.nbPillage}"></td>
         <td th:text="${userid.totalSommePillees}"></td>
@@ -47,6 +49,7 @@
                             <input type="hidden" name="id" th:value="*{userid.id}"  class="form-control my-3">
                             <input type="text" id="totalSommePillees" class="form-control" name="totalSommePillees"  th:value="*{userid.totalSommePillees}" required>
                         </div>
+
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </form>
                 </div>
